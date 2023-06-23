@@ -40,7 +40,7 @@
 /* ------------------------- */
 
 * {
-  font-family: cursive;
+  font-family: Georgia, 'Times New Roman', Times, serif;
   color: #333333;
 }
 
@@ -65,7 +65,7 @@
 /* ------------------------- */
 
 /* Styles for small devices (e.g., mobile) */
-@media (max-width: 400px) {
+@media (max-width: 425px) {
   /* Add your styles for small devices here */
 
   /* Example: Center-align name and designation */

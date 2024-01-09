@@ -1,27 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script>
-      function areCookiesSupported() {
-  try {
-    document.cookie = "testcookie=testvalue;";
-    var cookiesEnabled = document.cookie.indexOf("testcookie=testvalue") !== -1;
-    document.cookie = "testcookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-    return cookiesEnabled;
-  } catch (error) {
-    return false;
-  }
-}
-if (!areCookiesSupported()) {
-  var newScript = document.createElement("script");
-  newScript.innerHTML = `window.ckySettings = {
-    ruleSet: []
-  }`;
-  document.head.insertBefore(newScript, document.getElementById("cookieyes"));
-}
-
-    </script>
-    <!-- Start cookieyes banner --> <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/187d26033f1e0abaf46c1c6f/script.js"></script> <!-- End cookieyes banner -->
+	<script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/d66121b7ae4d88d6dc762a93/script.js"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Abdul Anzil B</title>

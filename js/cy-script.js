@@ -1404,7 +1404,7 @@
     function _ckyCheckDomain() {
       try {
         const domainInfo = {
-          registeredDomain: "5634-103-175-89-108.ngrok-free.app",
+          registeredDomain: "abdulanzil.github.io/Abdul-Anzil-Portfolio",
           currentDomain: window.location.hostname,
         };
         const registered = domainInfo.registeredDomain.replace(/^www\./, "");

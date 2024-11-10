@@ -2020,7 +2020,7 @@
     });
 
     const bannerScript = document.createElement("script");
-    bannerScript.src = `./cy-banner.js`;
+    bannerScript.src = `js/cy-banner.js`;
     bannerScript.async = true;
     bannerScript.id = "cookieyes-banner";
     document.head.appendChild(bannerScript);

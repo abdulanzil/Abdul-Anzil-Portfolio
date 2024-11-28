@@ -7,6 +7,15 @@
         allowedGoogleVendors: [43]
       }
     </script> -->
+    <script>
+      window.cookieyes = {};
+      window.cookieyes._gvlDataPromise = fetch("https://scriptstaging.cookieyes.com/common/iab-gvl-v3.json")
+        .then(response => response.json())
+        .catch(error => {
+            console.error("Failed to fetch GVL data:", error);
+            return null;
+        });
+    </script>
     <script id="cookieyes" type="text/javascript" src="https://scriptstaging.cookieyes.com/client_data/0ab88ed0ce109d0f9994416b/script.js"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

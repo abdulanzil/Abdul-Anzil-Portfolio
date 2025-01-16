@@ -2,8 +2,6 @@
   color: #cccccc;
 }
 
-/*temp css for toggle disable*/ input[type="checkbox"] { display: none !important; }
-
 .bg-dark-charcoal-gray {
   background-color: #333333;
 }

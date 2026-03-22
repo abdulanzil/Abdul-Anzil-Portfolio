@@ -1,0 +1,1557 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Abdul Anzil B — Software Engineer</title>
+    <meta
+      name="description"
+      content="Abdul Anzil B — Backend & Infrastructure Engineer. Node.js, Go, AWS. Building systems that scale."
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts: Plus Jakarta Sans (body) + IBM Plex Mono (code) + Instrument Serif (display) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;1,400&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ['"Instrument Serif"', "serif"],
+              mono: ['"IBM Plex Mono"', "monospace"],
+              body: ['"Plus Jakarta Sans"', "sans-serif"],
+            },
+            colors: {
+              accent: "#0066FF",
+            },
+            keyframes: {
+              fadeUp: {
+                "0%": { opacity: "0", transform: "translateY(28px)" },
+                "100%": { opacity: "1", transform: "translateY(0)" },
+              },
+              fadeIn: { "0%": { opacity: "0" }, "100%": { opacity: "1" } },
+              blink: { "0%,100%": { opacity: "1" }, "50%": { opacity: "0" } },
+              float: {
+                "0%,100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-10px)" },
+              },
+              spinSlow: {
+                from: { transform: "rotate(0deg)" },
+                to: { transform: "rotate(360deg)" },
+              },
+            },
+            animation: {
+              "fade-up": "fadeUp 0.7s ease forwards",
+              "fade-in": "fadeIn 0.6s ease forwards",
+              blink: "blink 1s step-end infinite",
+              float: "float 5s ease-in-out infinite",
+              "spin-slow": "spinSlow 22s linear infinite",
+              "spin-rev": "spinSlow 16s linear infinite reverse",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      /* ── CSS Variables ── */
+      :root {
+        --bg: #f0f2f5;
+        --bg-card: #ffffff;
+        --bg-card-hover: #e8ecf2;
+        --bg-tag: #e2e6ed;
+        --text-primary: #0d0f12;
+        --text-secondary: #3a3f4a;
+        --text-muted: #6b7280;
+        --border: #cdd2db;
+        --accent: #0066ff;
+        --accent-light: #dce9ff;
+        --nav-bg: rgba(240, 242, 245, 0.88);
+      }
+      .dark {
+        --bg: #0c0c0c;
+        --bg-card: #141414;
+        --bg-card-hover: #1c1c1c;
+        --bg-tag: #1a1a1a;
+        --text-primary: #f2f0eb;
+        --text-secondary: #a8a8a8;
+        --text-muted: #606060;
+        --border: #222222;
+        --accent: #3d8bff;
+        --accent-light: #0d1a33;
+        --nav-bg: rgba(12, 12, 12, 0.9);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text-primary);
+        font-family: "Plus Jakarta Sans", sans-serif;
+        transition:
+          background 0.4s ease,
+          color 0.4s ease;
+        overflow-x: hidden;
+      }
+
+      /* subtle grain */
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 999;
+      }
+
+      /* scrollbar */
+      ::-webkit-scrollbar {
+        width: 3px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--accent);
+        border-radius: 2px;
+      }
+
+      ::selection {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      /* ── Nav ── */
+      nav {
+        background: var(--nav-bg);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border-bottom: 1px solid var(--border);
+        transition:
+          transform 0.3s ease,
+          background 0.4s ease;
+      }
+
+      .nav-link {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.04em;
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: color 0.2s;
+        position: relative;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: var(--accent);
+        transition: width 0.25s ease;
+      }
+      .nav-link:hover {
+        color: var(--accent);
+      }
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      /* ── Theme Toggle ── */
+      .theme-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        background: var(--bg-tag);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 5px 12px;
+        transition: border-color 0.3s;
+      }
+      .theme-toggle:hover {
+        border-color: var(--accent);
+      }
+      .toggle-track {
+        width: 30px;
+        height: 17px;
+        background: var(--border);
+        border-radius: 999px;
+        position: relative;
+        transition: background 0.3s;
+        flex-shrink: 0;
+      }
+      .dark .toggle-track {
+        background: var(--accent);
+      }
+      .toggle-thumb {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 13px;
+        height: 13px;
+        background: #fff;
+        border-radius: 50%;
+        transition: transform 0.3s ease;
+      }
+      .dark .toggle-thumb {
+        transform: translateX(13px);
+      }
+      .toggle-label {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.62rem;
+        color: var(--text-muted);
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+      }
+
+      /* ── Sections ── */
+      section {
+        position: relative;
+        z-index: 1;
+      }
+
+      .section-label {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.68rem;
+        letter-spacing: 0.18em;
+        color: var(--accent);
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+      }
+      .section-divider {
+        width: 36px;
+        height: 3px;
+        background: var(--accent);
+        border-radius: 2px;
+        margin-bottom: 1.5rem;
+      }
+      .section-title {
+        font-family: "Instrument Serif", serif;
+        font-weight: 400;
+        color: var(--text-primary);
+        line-height: 1.1;
+      }
+
+      /* ── Card ── */
+      .card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+      }
+      .card:hover {
+        background: var(--bg-card-hover);
+        border-color: var(--accent);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(0, 102, 255, 0.08);
+      }
+
+      /* ── Tag ── */
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        background: var(--bg-tag);
+        color: var(--text-secondary);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 3px 9px;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.68rem;
+        transition: all 0.2s;
+      }
+      .tag:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      /* ── Skill group ── */
+      .skill-group-title {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.62rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border);
+      }
+
+      /* ── Timeline ── */
+      .timeline-dot {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: var(--accent);
+        flex-shrink: 0;
+        margin-top: 6px;
+        box-shadow: 0 0 0 3px var(--accent-light);
+      }
+
+      /* ── Project card ── */
+      .project-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+      .project-card:hover {
+        border-color: var(--accent);
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(0, 102, 255, 0.1);
+      }
+      .project-img {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        display: block;
+        filter: grayscale(15%);
+        transition: filter 0.3s;
+      }
+      .project-card:hover .project-img {
+        filter: grayscale(0%);
+      }
+
+      /* ── Cert ── */
+      .cert-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+        transition: background 0.2s;
+      }
+      .cert-item:last-child {
+        border-bottom: none;
+      }
+      .cert-item:hover {
+        background: var(--bg-card-hover);
+      }
+      .cert-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--accent);
+        flex-shrink: 0;
+      }
+
+      /* ── Contact link ── */
+      .contact-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 15px 20px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        text-decoration: none;
+        color: var(--text-primary);
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.75rem;
+        transition: all 0.3s;
+      }
+      .contact-link:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+        transform: translateX(4px);
+      }
+      .contact-icon {
+        width: 18px;
+        height: 18px;
+        color: var(--accent);
+        flex-shrink: 0;
+      }
+
+      /* ── Scroll reveal ── */
+      .reveal {
+        opacity: 0;
+        transform: translateY(22px);
+        transition:
+          opacity 0.65s ease,
+          transform 0.65s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ── Hero orbit ── */
+      .orbit-ring {
+        position: absolute;
+        border-radius: 50%;
+        border: 1px dashed var(--border);
+      }
+      .tech-node {
+        position: absolute;
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.58rem;
+        color: var(--accent);
+        background: var(--bg-card);
+        border: 1px solid var(--accent);
+        border-radius: 4px;
+        padding: 2px 7px;
+        white-space: nowrap;
+        box-shadow: 0 2px 12px rgba(0, 102, 255, 0.12);
+      }
+
+      /* ── Profile ring ── */
+      .profile-ring {
+        width: 170px;
+        height: 170px;
+        border-radius: 50%;
+        border: 2px solid var(--accent);
+        padding: 4px;
+        box-shadow: 0 0 40px rgba(0, 102, 255, 0.15);
+      }
+      .profile-ring img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      /* ── Accent text ── */
+      .accent-text {
+        color: var(--accent);
+      }
+
+      /* ── Terminal line ── */
+      .terminal-line {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.78rem;
+        color: var(--text-muted);
+      }
+      .terminal-line .prompt {
+        color: var(--accent);
+      }
+
+      /* ── Typed cursor ── */
+      #typed-cursor {
+        display: inline-block;
+        width: 2px;
+        height: 1em;
+        background: var(--accent);
+        vertical-align: middle;
+        animation: blink 1s step-end infinite;
+      }
+
+      /* ── Mobile menu ── */
+      #mobile-menu {
+        background: var(--nav-bg);
+        backdrop-filter: blur(16px);
+        border-top: 1px solid var(--border);
+      }
+
+      /* ── Footer ── */
+      footer {
+        border-top: 1px solid var(--border);
+        background: var(--bg-card);
+      }
+
+      /* ── Bullet list items ── */
+      .bullet-item {
+        display: flex;
+        gap: 10px;
+        font-size: 0.88rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+      }
+      .bullet-item .arrow {
+        color: var(--accent);
+        flex-shrink: 0;
+      }
+
+      /* ── Info row ── */
+      .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .info-row:last-child {
+        border-bottom: none;
+      }
+      .info-key {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.7rem;
+        color: var(--text-muted);
+      }
+      .info-val {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 0.7rem;
+        color: var(--text-primary);
+      }
+
+      /* ── Hero delay animations ── */
+      .delay-1 {
+        animation-delay: 0.1s;
+      }
+      .delay-2 {
+        animation-delay: 0.25s;
+      }
+      .delay-3 {
+        animation-delay: 0.4s;
+      }
+      .delay-4 {
+        animation-delay: 0.55s;
+      }
+      .delay-5 {
+        animation-delay: 0.7s;
+      }
+      .delay-6 {
+        animation-delay: 1.1s;
+      }
+      .anim-init {
+        opacity: 0;
+        animation-fill-mode: forwards;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ═══════════════════════════ NAV ═══ -->
+    <nav class="fixed top-0 left-0 right-0 z-50" id="mainNav">
+      <div
+        class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between"
+      >
+        <a
+          href="#hero"
+          style="color: var(--text-primary); text-decoration: none"
+          class="font-mono text-sm font-semibold tracking-widest"
+        >
+          <span class="accent-text">./</span>anzil
+        </a>
+
+        <div class="hidden md:flex items-center gap-8">
+          <a href="#about" class="nav-link">about</a>
+          <a href="#skills" class="nav-link">skills</a>
+          <a href="#experience" class="nav-link">experience</a>
+          <a href="#projects" class="nav-link">projects</a>
+          <a href="#certifications" class="nav-link">certs</a>
+          <a href="#contact" class="nav-link">contact</a>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button
+            class="theme-toggle"
+            id="themeToggle"
+            aria-label="Toggle dark mode"
+          >
+            <div class="toggle-track"><div class="toggle-thumb"></div></div>
+            <span class="toggle-label hidden sm:inline"
+              >explore the dark side of Abdul Anzil</span
+            >
+          </button>
+          <button
+            id="hamburger"
+            class="md:hidden flex flex-col gap-1.5 p-1"
+            aria-label="Open menu"
+          >
+            <span
+              style="
+                display: block;
+                width: 22px;
+                height: 2px;
+                background: var(--text-primary);
+                border-radius: 2px;
+                transition: all 0.3s;
+              "
+            ></span>
+            <span
+              style="
+                display: block;
+                width: 22px;
+                height: 2px;
+                background: var(--text-primary);
+                border-radius: 2px;
+                transition: all 0.3s;
+              "
+            ></span>
+            <span
+              style="
+                display: block;
+                width: 22px;
+                height: 2px;
+                background: var(--text-primary);
+                border-radius: 2px;
+                transition: all 0.3s;
+              "
+            ></span>
+          </button>
+        </div>
+      </div>
+
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden px-6 py-5 flex flex-col gap-5"
+      >
+        <a href="#about" class="nav-link" onclick="closeMobileMenu()">about</a>
+        <a href="#skills" class="nav-link" onclick="closeMobileMenu()"
+          >skills</a
+        >
+        <a href="#experience" class="nav-link" onclick="closeMobileMenu()"
+          >experience</a
+        >
+        <a href="#projects" class="nav-link" onclick="closeMobileMenu()"
+          >projects</a
+        >
+        <a href="#certifications" class="nav-link" onclick="closeMobileMenu()"
+          >certs</a
+        >
+        <a href="#contact" class="nav-link" onclick="closeMobileMenu()"
+          >contact</a
+        >
+      </div>
+    </nav>
+
+    <!-- ═══════════════════════════ HERO ═══ -->
+    <section id="hero" class="min-h-screen flex items-center pt-24 pb-16 px-6">
+      <div class="max-w-6xl mx-auto w-full">
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+          "
+          class="hero-grid"
+        >
+          <!-- Left -->
+          <div>
+            <p class="terminal-line mb-5 anim-init animate-fade-in">
+              <span class="prompt">~ $</span>&nbsp;whoami
+            </p>
+
+            <h1
+              class="section-title anim-init animate-fade-up delay-1"
+              style="font-size: clamp(3rem, 6vw, 5.5rem); margin-bottom: 1rem"
+            >
+              Abdul<br />
+              <span class="accent-text">Anzil</span> B
+            </h1>
+
+            <p
+              class="anim-init animate-fade-up delay-2 font-mono"
+              style="
+                font-size: 0.85rem;
+                color: var(--text-secondary);
+                margin-bottom: 1.5rem;
+                min-height: 1.5em;
+              "
+            >
+              <span id="typed-text"></span><span id="typed-cursor"></span>
+            </p>
+
+            <p
+              class="anim-init animate-fade-up delay-3"
+              style="
+                color: var(--text-secondary);
+                font-size: 0.95rem;
+                max-width: 420px;
+                line-height: 1.75;
+                margin-bottom: 2rem;
+              "
+            >
+              Backend &amp; infrastructure engineer based in Kerala. ECE grad
+              who shifted hard into systems, distributed services, and cloud
+              infrastructure.
+            </p>
+
+            <div
+              class="flex flex-wrap gap-2 anim-init animate-fade-up delay-4"
+              style="margin-bottom: 2rem"
+            >
+              <span class="tag">Node.js</span>
+              <span class="tag">Go</span>
+              <span class="tag">AWS</span>
+              <span class="tag">Microservices</span>
+              <span class="tag">Event-Driven</span>
+            </div>
+
+            <div class="flex gap-4 anim-init animate-fade-up delay-5">
+              <a
+                href="#projects"
+                style="
+                  background: var(--accent);
+                  color: #fff;
+                  text-decoration: none;
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 8px;
+                  padding: 11px 24px;
+                  border-radius: 8px;
+                  font-family: &quot;IBM Plex Mono&quot;, monospace;
+                  font-size: 0.78rem;
+                  font-weight: 600;
+                  transition: all 0.25s;
+                "
+                onmouseover="
+                  this.style.transform = 'translateY(-2px)';
+                  this.style.boxShadow = '0 8px 24px rgba(0,102,255,0.3)';
+                "
+                onmouseout="
+                  this.style.transform = '';
+                  this.style.boxShadow = '';
+                "
+              >
+                view projects →
+              </a>
+              <a
+                href="#contact"
+                class="card"
+                style="
+                  text-decoration: none;
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 8px;
+                  padding: 11px 24px;
+                  border-radius: 8px;
+                  font-family: &quot;IBM Plex Mono&quot;, monospace;
+                  font-size: 0.78rem;
+                  color: var(--text-secondary);
+                "
+              >
+                get in touch
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: orbit visual -->
+          <div
+            class="hidden md:flex items-center justify-center"
+            style="height: 380px; position: relative"
+          >
+            <div
+              class="orbit-ring animate-spin-slow"
+              style="width: 290px; height: 290px"
+            ></div>
+            <div
+              class="orbit-ring animate-spin-rev"
+              style="width: 200px; height: 200px"
+            ></div>
+            <div
+              class="orbit-ring"
+              style="width: 350px; height: 350px; opacity: 0.4"
+            ></div>
+
+            <div style="position: relative; z-index: 10" class="animate-float">
+              <div class="profile-ring">
+                <img
+                  src="images/profile.jpg"
+                  alt="Abdul Anzil B"
+                  onerror="
+                    this.parentElement.innerHTML =
+                      '<div style=&quot;width:100%;height:100%;border-radius:50%;background:var(--bg-tag);display:flex;align-items:center;justify-content:center;font-family:IBM Plex Mono,monospace;font-size:2rem;color:var(--accent)&quot;>AA</div>'
+                  "
+                />
+              </div>
+            </div>
+
+            <div class="tech-node" style="top: 8%; left: 58%">Go</div>
+            <div class="tech-node" style="top: 72%; left: 63%">AWS</div>
+            <div class="tech-node" style="top: 12%; right: 62%">Node.js</div>
+            <div class="tech-node" style="bottom: 10%; left: 38%">
+              Microservices
+            </div>
+          </div>
+        </div>
+
+        <!-- Scroll hint -->
+        <div
+          class="flex flex-col items-center gap-2 mt-16 anim-init animate-fade-in delay-6"
+        >
+          <span
+            class="font-mono"
+            style="
+              font-size: 0.65rem;
+              color: var(--text-muted);
+              letter-spacing: 0.1em;
+            "
+            >SCROLL</span
+          >
+          <div
+            style="
+              width: 1px;
+              height: 36px;
+              background: linear-gradient(
+                to bottom,
+                var(--accent),
+                transparent
+              );
+            "
+            class="animate-float"
+          ></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════ ABOUT ═══ -->
+    <section id="about" class="py-24 px-6" style="background: var(--bg-card)">
+      <div class="max-w-6xl mx-auto">
+        <div class="reveal">
+          <p class="section-label">01 / about</p>
+          <div class="section-divider"></div>
+          <h2
+            class="section-title mb-12"
+            style="font-size: clamp(2.2rem, 4vw, 3.5rem)"
+          >
+            Who I am
+          </h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-12 items-start">
+          <div class="reveal">
+            <p
+              style="
+                color: var(--text-secondary);
+                font-size: 0.95rem;
+                line-height: 1.8;
+                margin-bottom: 1.2rem;
+              "
+            >
+              I'm Abdul Anzil — a backend and infrastructure engineer from
+              Kerala. I started out studying Electronics &amp; Communication,
+              but somewhere along the way I fell in love with building systems
+              that actually run things.
+            </p>
+            <p
+              style="
+                color: var(--text-secondary);
+                font-size: 0.95rem;
+                line-height: 1.8;
+                margin-bottom: 1.2rem;
+              "
+            >
+              Backend engineering is where I've planted myself — distributed
+              systems, event-driven architectures, cloud infrastructure. I like
+              the part of the stack where decisions have real consequences at
+              scale.
+            </p>
+            <p
+              style="
+                color: var(--text-secondary);
+                font-size: 0.95rem;
+                line-height: 1.8;
+              "
+            >
+              I run an AI-augmented workflow by default — Cursor, Claude,
+              Gemini, ChatGPT. Not as novelty, but as leverage. It's changed how
+              I think about speed, scope, and what one person can actually
+              build.
+            </p>
+          </div>
+
+          <div class="reveal">
+            <div class="card p-6">
+              <p
+                class="font-mono mb-4"
+                style="font-size: 0.68rem; color: var(--text-muted)"
+              >
+                // quick.facts
+              </p>
+              <div class="info-row">
+                <span class="info-key">location</span>
+                <span class="info-val">Kerala, India</span>
+              </div>
+              <div class="info-row">
+                <span class="info-key">experience</span>
+                <span class="info-val">2+ years</span>
+              </div>
+              <div class="info-row">
+                <span class="info-key">background</span>
+                <span class="info-val">ECE → Backend / Infra</span>
+              </div>
+              <div class="info-row" style="border-bottom: none">
+                <span class="info-key">stack</span>
+                <span class="accent-text font-mono" style="font-size: 0.7rem"
+                  >Node.js · Go · AWS</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════ SKILLS ═══ -->
+    <section id="skills" class="py-24 px-6">
+      <div class="max-w-6xl mx-auto">
+        <div class="reveal">
+          <p class="section-label">02 / skills</p>
+          <div class="section-divider"></div>
+          <h2
+            class="section-title mb-12"
+            style="font-size: clamp(2.2rem, 4vw, 3.5rem)"
+          >
+            What I work with
+          </h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="card p-6 reveal">
+            <p class="skill-group-title">Languages</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="tag">Node.js</span>
+              <span class="tag">Go</span>
+              <span class="tag">Python</span>
+              <span class="tag">JavaScript</span>
+              <span class="tag">SQL</span>
+              <span class="tag">Bash</span>
+            </div>
+          </div>
+
+          <div class="card p-6 reveal">
+            <p class="skill-group-title">Backend & Architecture</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="tag">Microservices</span>
+              <span class="tag">Event-Driven</span>
+              <span class="tag">REST APIs</span>
+              <span class="tag">Cron Systems</span>
+              <span class="tag">Message Queues</span>
+            </div>
+          </div>
+
+          <div class="card p-6 reveal">
+            <p class="skill-group-title">Infrastructure & Cloud</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="tag">AWS</span>
+              <span class="tag">Docker</span>
+              <span class="tag">Monitoring</span>
+              <span class="tag">Scaling</span>
+              <span class="tag">DevOps</span>
+            </div>
+          </div>
+
+          <div class="card p-6 reveal">
+            <p class="skill-group-title">AI & Workflow Tools</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="tag">Cursor</span>
+              <span class="tag">Claude</span>
+              <span class="tag">ChatGPT</span>
+              <span class="tag">Gemini</span>
+              <span class="tag">AI-augmented dev</span>
+            </div>
+          </div>
+
+          <div class="card p-6 reveal">
+            <p class="skill-group-title">Frontend (Exposure)</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="tag">React.js</span>
+              <span class="tag">HTML / CSS</span>
+              <span class="tag">Accessibility</span>
+              <span class="tag">Performance</span>
+            </div>
+          </div>
+
+          <div class="card p-6 reveal">
+            <p class="skill-group-title">ML / AI Background</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="tag">Computer Vision</span>
+              <span class="tag">Deep Learning</span>
+              <span class="tag">TensorFlow</span>
+              <span class="tag">OpenCV</span>
+              <span class="tag">YOLOv8</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════ EXPERIENCE ═══ -->
+    <section
+      id="experience"
+      class="py-24 px-6"
+      style="background: var(--bg-card)"
+    >
+      <div class="max-w-6xl mx-auto">
+        <div class="reveal">
+          <p class="section-label">03 / experience</p>
+          <div class="section-divider"></div>
+          <h2
+            class="section-title mb-12"
+            style="font-size: clamp(2.2rem, 4vw, 3.5rem)"
+          >
+            Where I've worked
+          </h2>
+        </div>
+
+        <!-- Job -->
+        <div class="flex gap-6 reveal">
+          <div class="flex flex-col items-center pt-1">
+            <div class="timeline-dot"></div>
+            <div
+              style="
+                width: 1px;
+                flex-grow: 1;
+                background: var(--border);
+                margin: 6px auto;
+              "
+            ></div>
+          </div>
+          <div class="flex-1 pb-10">
+            <div class="card p-8">
+              <div
+                class="flex flex-wrap justify-between items-start gap-4 mb-6"
+              >
+                <div>
+                  <h3
+                    class="section-title"
+                    style="font-size: 1.6rem; margin-bottom: 4px"
+                  >
+                    Software Engineer
+                  </h3>
+                  <p class="font-mono accent-text" style="font-size: 0.75rem">
+                    Product-based company · Kerala
+                  </p>
+                </div>
+                <span class="tag">2023 – Present</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Education -->
+        <div class="flex gap-6 reveal">
+          <div class="flex flex-col items-center pt-1">
+            <div
+              style="
+                width: 11px;
+                height: 11px;
+                border-radius: 50%;
+                border: 2px solid var(--accent);
+                background: var(--bg);
+                flex-shrink: 0;
+                margin-top: 6px;
+              "
+            ></div>
+          </div>
+          <div class="flex-1">
+            <div
+              style="
+                padding: 1.25rem 1.5rem;
+                border: 1px dashed var(--border);
+                border-radius: 10px;
+              "
+            >
+              <div class="flex flex-wrap justify-between items-center gap-2">
+                <div>
+                  <p
+                    style="
+                      font-family: &quot;Plus Jakarta Sans&quot;, sans-serif;
+                      font-weight: 600;
+                      font-size: 1rem;
+                      color: var(--text-primary);
+                      margin-bottom: 2px;
+                    "
+                  >
+                    B.Tech — Electronics &amp; Communication Engineering
+                  </p>
+                  <p
+                    class="font-mono"
+                    style="font-size: 0.65rem; color: var(--text-muted)"
+                  >
+                    Kerala, India
+                  </p>
+                </div>
+                <span class="tag">Graduated 2023</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════ PROJECTS ═══ -->
+    <section id="projects" class="py-24 px-6">
+      <div class="max-w-6xl mx-auto">
+        <div class="reveal">
+          <p class="section-label">04 / projects</p>
+          <div class="section-divider"></div>
+          <h2
+            class="section-title mb-3"
+            style="font-size: clamp(2.2rem, 4vw, 3.5rem)"
+          >
+            Things I've built
+          </h2>
+          <p
+            class="font-mono reveal"
+            style="
+              font-size: 0.68rem;
+              color: var(--text-muted);
+              margin-bottom: 3rem;
+            "
+          >
+            // College-era AI &amp; ML projects
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- AI Biller -->
+          <div class="project-card reveal">
+            <img src="images/biller.jpg" alt="AI Biller" class="project-img" />
+            <div class="p-5">
+              <h3
+                style="
+                  font-family: &quot;Instrument Serif&quot;, serif;
+                  font-size: 1.25rem;
+                  color: var(--text-primary);
+                  margin-bottom: 8px;
+                "
+              >
+                AI Biller
+              </h3>
+              <p
+                style="
+                  font-size: 0.85rem;
+                  color: var(--text-secondary);
+                  line-height: 1.7;
+                  margin-bottom: 1rem;
+                "
+              >
+                Automated retail billing using YOLOv8 computer vision. Detects
+                products in real-time, calculates totals, and delivers an
+                interactive checkout interface.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-4">
+                <span class="tag">YOLOv8</span>
+                <span class="tag">Computer Vision</span>
+                <span class="tag">Python</span>
+              </div>
+              <a
+                href="https://github.com/abdulanzil/AI-Biller"
+                target="_blank"
+                rel="noopener"
+                class="font-mono accent-text"
+                style="font-size: 0.7rem; text-decoration: none"
+              >
+                view on github →
+              </a>
+            </div>
+          </div>
+
+          <!-- AI Chessbot -->
+          <div class="project-card reveal">
+            <img
+              src="images/chess.png"
+              alt="AI Chessbot"
+              class="project-img"
+              style="
+                object-fit: contain;
+                padding: 1.5rem;
+                background: var(--bg-tag);
+              "
+            />
+            <div class="p-5">
+              <h3
+                style="
+                  font-family: &quot;Instrument Serif&quot;, serif;
+                  font-size: 1.25rem;
+                  color: var(--text-primary);
+                  margin-bottom: 8px;
+                "
+              >
+                AI Chessbot
+              </h3>
+              <p
+                style="
+                  font-size: 0.85rem;
+                  color: var(--text-secondary);
+                  line-height: 1.7;
+                  margin-bottom: 1rem;
+                "
+              >
+                Chess game where your moves are recognised via computer vision.
+                The AI opponent runs on the Stockfish engine — CV and game AI in
+                one project.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-4">
+                <span class="tag">Stockfish</span>
+                <span class="tag">OpenCV</span>
+                <span class="tag">Python</span>
+              </div>
+              <a
+                href="https://github.com/abdulanzil/CHESSBOT"
+                target="_blank"
+                rel="noopener"
+                class="font-mono accent-text"
+                style="font-size: 0.7rem; text-decoration: none"
+              >
+                view on github →
+              </a>
+            </div>
+          </div>
+
+          <!-- BMI App -->
+          <div class="project-card reveal">
+            <img src="images/bmi.jpg" alt="BMI Guide App" class="project-img" />
+            <div class="p-5">
+              <h3
+                style="
+                  font-family: &quot;Instrument Serif&quot;, serif;
+                  font-size: 1.25rem;
+                  color: var(--text-primary);
+                  margin-bottom: 8px;
+                "
+              >
+                BMI Guide App
+              </h3>
+              <p
+                style="
+                  font-size: 0.85rem;
+                  color: var(--text-secondary);
+                  line-height: 1.7;
+                  margin-bottom: 1rem;
+                "
+              >
+                React.js app that calculates BMI, classifies the result, and
+                provides personalised weight guidance. Clean UI, instant
+                feedback.
+              </p>
+              <div class="flex flex-wrap gap-2 mb-4">
+                <span class="tag">React.js</span>
+                <span class="tag">JavaScript</span>
+              </div>
+              <a
+                href="https://github.com/abdulanzil/BMI-guide-app"
+                target="_blank"
+                rel="noopener"
+                class="font-mono accent-text"
+                style="font-size: 0.7rem; text-decoration: none"
+              >
+                view on github →
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 text-center reveal">
+          <a
+            href="https://github.com/abdulanzil"
+            target="_blank"
+            rel="noopener"
+            class="card inline-flex items-center gap-2 px-6 py-3 rounded-lg font-mono"
+            style="
+              font-size: 0.75rem;
+              color: var(--text-secondary);
+              text-decoration: none;
+              transition: color 0.2s;
+            "
+            onmouseover="this.style.color = 'var(--accent)'"
+            onmouseout="this.style.color = 'var(--text-secondary)'"
+          >
+            more on github →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════ CERTIFICATIONS ═══ -->
+    <section
+      id="certifications"
+      class="py-24 px-6"
+      style="background: var(--bg-card)"
+    >
+      <div class="max-w-6xl mx-auto">
+        <div class="reveal">
+          <p class="section-label">05 / certifications</p>
+          <div class="section-divider"></div>
+          <h2
+            class="section-title mb-12"
+            style="font-size: clamp(2.2rem, 4vw, 3.5rem)"
+          >
+            Courses &amp; certs
+          </h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 reveal">
+          <div class="card overflow-hidden">
+            <div class="p-4" style="border-bottom: 1px solid var(--border)">
+              <p
+                class="font-mono accent-text"
+                style="font-size: 0.65rem; letter-spacing: 0.1em"
+              >
+                // AI &amp; MACHINE LEARNING
+              </p>
+            </div>
+            <div>
+              <div class="cert-item">
+                <div class="cert-dot"></div>
+                <span style="font-size: 0.85rem; color: var(--text-secondary)"
+                  >Mathematics for Machine Learning: Linear Algebra</span
+                >
+              </div>
+              <div class="cert-item">
+                <div class="cert-dot"></div>
+                <span style="font-size: 0.85rem; color: var(--text-secondary)"
+                  >Introduction to Deep Learning</span
+                >
+              </div>
+              <div class="cert-item">
+                <div class="cert-dot"></div>
+                <span style="font-size: 0.85rem; color: var(--text-secondary)"
+                  >Python and Deep Learning</span
+                >
+              </div>
+              <div class="cert-item">
+                <div class="cert-dot"></div>
+                <span style="font-size: 0.85rem; color: var(--text-secondary)"
+                  >Introduction to TensorFlow and Keras</span
+                >
+              </div>
+              <div class="cert-item">
+                <div class="cert-dot"></div>
+                <span style="font-size: 0.85rem; color: var(--text-secondary)"
+                  >Reinforcement Learning with Python</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="card overflow-hidden">
+            <div class="p-4" style="border-bottom: 1px solid var(--border)">
+              <p
+                class="font-mono accent-text"
+                style="font-size: 0.65rem; letter-spacing: 0.1em"
+              >
+                // VISION, NLP &amp; SYSTEMS
+              </p>
+            </div>
+            <div>
+              <div class="cert-item">
+                <div class="cert-dot"></div>
+                <span style="font-size: 0.85rem; color: var(--text-secondary)"
+                  >Computer Vision Essentials</span
+                >
+              </div>
+              <div class="cert-item">
+                <div class="cert-dot"></div>
+                <span style="font-size: 0.85rem; color: var(--text-secondary)"
+                  >Digital Image Processing</span
+                >
+              </div>
+              <div class="cert-item">
+                <div class="cert-dot"></div>
+                <span style="font-size: 0.85rem; color: var(--text-secondary)"
+                  >Introduction to Natural Language Processing</span
+                >
+              </div>
+              <div class="cert-item">
+                <div class="cert-dot"></div>
+                <span style="font-size: 0.85rem; color: var(--text-secondary)"
+                  >Introduction to Ethical Hacking</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════ CONTACT ═══ -->
+    <section id="contact" class="py-24 px-6">
+      <div class="max-w-6xl mx-auto">
+        <div class="reveal">
+          <p class="section-label">06 / contact</p>
+          <div class="section-divider"></div>
+          <h2
+            class="section-title mb-4"
+            style="font-size: clamp(2.2rem, 4vw, 3.5rem)"
+          >
+            Get in touch
+          </h2>
+          <p
+            class="reveal"
+            style="
+              color: var(--text-secondary);
+              font-size: 0.95rem;
+              max-width: 460px;
+              line-height: 1.75;
+              margin-bottom: 3rem;
+            "
+          >
+            Open to interesting conversations — whether it's a role, a project,
+            or just a good engineering discussion.
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-4 max-w-md reveal">
+          <a href="mailto:abdulanzil421@gmail.com" class="contact-link">
+            <svg
+              class="contact-icon"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+              />
+            </svg>
+            abdulanzil421@gmail.com
+          </a>
+          <a
+            href="https://linkedin.com/in/abdulanzil"
+            target="_blank"
+            rel="noopener"
+            class="contact-link"
+          >
+            <svg
+              class="contact-icon"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+              />
+            </svg>
+            linkedin.com/in/abdulanzil
+          </a>
+          <a
+            href="https://github.com/abdulanzil"
+            target="_blank"
+            rel="noopener"
+            class="contact-link"
+          >
+            <svg
+              class="contact-icon"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"
+              />
+            </svg>
+            github.com/abdulanzil
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════ FOOTER ═══ -->
+    <footer class="py-8 px-6">
+      <div
+        class="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-4"
+      >
+        <p
+          class="font-mono"
+          style="font-size: 0.68rem; color: var(--text-muted)"
+        >
+          © 2026 Abdul Anzil B &nbsp;·&nbsp; Built with HTML · Tailwind · JS
+        </p>
+        <p
+          class="font-mono"
+          style="font-size: 0.68rem; color: var(--text-muted)"
+        >
+          <span class="accent-text">∎</span> Kerala
+        </p>
+      </div>
+    </footer>
+
+    <!-- ═══════════════════════════ SCRIPTS ═══ -->
+    <script>
+      // ── Theme: persist via localStorage ──
+      const html = document.documentElement;
+      const saved = localStorage.getItem("anzil-theme") || "light";
+      if (saved === "dark") html.classList.add("dark");
+
+      document.getElementById("themeToggle").addEventListener("click", () => {
+        html.classList.toggle("dark");
+        localStorage.setItem(
+          "anzil-theme",
+          html.classList.contains("dark") ? "dark" : "light",
+        );
+      });
+
+      // ── Mobile menu ──
+      document.getElementById("hamburger").addEventListener("click", () => {
+        document.getElementById("mobile-menu").classList.toggle("hidden");
+      });
+      function closeMobileMenu() {
+        document.getElementById("mobile-menu").classList.add("hidden");
+      }
+
+      // ── Typewriter ──
+      const phrases = [
+        "Software Engineer",
+        "Backend & Infrastructure",
+        "Microservices @ scale",
+        "AI-augmented developer",
+      ];
+      let pi = 0,
+        ci = 0,
+        deleting = false;
+      const el = document.getElementById("typed-text");
+      function type() {
+        const cur = phrases[pi];
+        if (!deleting) {
+          el.textContent = cur.slice(0, ++ci);
+          if (ci === cur.length) {
+            deleting = true;
+            setTimeout(type, 1800);
+            return;
+          }
+        } else {
+          el.textContent = cur.slice(0, --ci);
+          if (ci === 0) {
+            deleting = false;
+            pi = (pi + 1) % phrases.length;
+          }
+        }
+        setTimeout(type, deleting ? 42 : 78);
+      }
+      type();
+
+      // ── Scroll reveal ──
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("visible");
+              observer.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.1 },
+      );
+      document
+        .querySelectorAll(".reveal")
+        .forEach((el) => observer.observe(el));
+
+      // ── Nav hide/show on scroll ──
+      let lastY = 0;
+      const nav = document.getElementById("mainNav");
+      nav.style.transition = "transform 0.3s ease, background 0.4s ease";
+      window.addEventListener("scroll", () => {
+        const y = window.scrollY;
+        nav.style.transform =
+          y > lastY && y > 80 ? "translateY(-100%)" : "translateY(0)";
+        lastY = y;
+      });
+    </script>
+  </body>
+</html>
